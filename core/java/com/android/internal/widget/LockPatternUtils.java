@@ -461,8 +461,7 @@ public class LockPatternUtils {
         } catch (RemoteException e) {
             // well, we tried...
         }
-
-        if (userHandle == UserHandle.USER_OWNER) {
+	if (userHandle == UserHandle.USER_OWNER) {
             // Set the encryption password to default.
             updateEncryptionPassword(StorageManager.CRYPT_TYPE_DEFAULT, null);
         }

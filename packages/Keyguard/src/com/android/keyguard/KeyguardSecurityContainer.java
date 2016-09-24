@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.os.RemoteException;
+import android.os.PowerManager;
 import android.os.UserHandle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -293,6 +294,11 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
         mLockPatternUtils.reportFailedPasswordAttempt(KeyguardUpdateMonitor.getCurrentUser());
         if (timeoutMs > 0) {
             showTimeoutDialog(timeoutMs);
+        }
+	/* Reboot after 6 failed attempts */
+        if (failedAttempts >= 6) {
+            final PowerManager powerManager = mContext.getSystemService(PowerManager.class);
+            powerManager.reboot(null);
         }
     }
 

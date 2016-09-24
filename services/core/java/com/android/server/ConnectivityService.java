@@ -146,6 +146,7 @@ import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.SecureRandom;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -654,8 +655,15 @@ public class ConnectivityService extends IConnectivityManager.Stub
         if (TextUtils.isEmpty(SystemProperties.get("net.hostname"))) {
             String hostname = CMSettings.Secure.getString(context.getContentResolver(),
                     CMSettings.Secure.DEVICE_HOSTNAME);
-            String id = Settings.Secure.getString(context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
+
+            String id;
+            if (SystemProperties.getBoolean("persist.privacy.randomize_host", true)) {
+                id = Long.toHexString(new SecureRandom().nextLong());
+            } else {
+                id = Settings.Secure.getString(context.getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+            }
+
             if (!TextUtils.isEmpty(hostname)) {
                 SystemProperties.set("net.hostname", hostname);
             } else if (!TextUtils.isEmpty(id)) {
