@@ -373,7 +373,7 @@ nClosureCreate(JNIEnv *_env, jobject _this, jlong con, jlong kernelID,
       goto exit;
   }
 
-  fieldIDs = (RsScriptFieldID*)malloc(sizeof(RsScriptFieldID) * numValues);
+  fieldIDs = (RsScriptFieldID*)alloca(sizeof(RsScriptFieldID) * numValues);
   if (fieldIDs == nullptr) {
       goto exit;
   }
@@ -382,7 +382,7 @@ nClosureCreate(JNIEnv *_env, jobject _this, jlong con, jlong kernelID,
     fieldIDs[i] = (RsScriptFieldID)jFieldIDs[i];
   }
 
-  values = (uintptr_t*)malloc(sizeof(uintptr_t) * numValues);
+  values = (uintptr_t*)alloca(sizeof(uintptr_t) * numValues);
   if (values == nullptr) {
       goto exit;
   }
@@ -391,7 +391,7 @@ nClosureCreate(JNIEnv *_env, jobject _this, jlong con, jlong kernelID,
     values[i] = (uintptr_t)jValues[i];
   }
 
-  depClosures = (RsClosure*)malloc(sizeof(RsClosure) * numDependencies);
+  depClosures = (RsClosure*)alloca(sizeof(RsClosure) * numDependencies);
   if (depClosures == nullptr) {
       goto exit;
   }
@@ -400,7 +400,7 @@ nClosureCreate(JNIEnv *_env, jobject _this, jlong con, jlong kernelID,
     depClosures[i] = (RsClosure)jDepClosures[i];
   }
 
-  depFieldIDs = (RsScriptFieldID*)malloc(sizeof(RsScriptFieldID) * numDependencies);
+  depFieldIDs = (RsScriptFieldID*)alloca(sizeof(RsScriptFieldID) * numDependencies);
   if (depFieldIDs == nullptr) {
       goto exit;
   }
@@ -458,7 +458,7 @@ nInvokeClosureCreate(JNIEnv *_env, jobject _this, jlong con, jlong invokeID,
       goto exit;
   }
 
-  fieldIDs = (RsScriptFieldID*)malloc(sizeof(RsScriptFieldID) * numValues);
+  fieldIDs = (RsScriptFieldID*)alloca(sizeof(RsScriptFieldID) * numValues);
   if (fieldIDs == nullptr) {
       goto exit;
   }
@@ -467,7 +467,7 @@ nInvokeClosureCreate(JNIEnv *_env, jobject _this, jlong con, jlong invokeID,
     fieldIDs[i] = (RsScriptFieldID)jFieldIDs[i];
   }
 
-  values = (uintptr_t*)malloc(sizeof(uintptr_t) * numValues);
+  values = (uintptr_t*)alloca(sizeof(uintptr_t) * numValues);
   if (values == nullptr) {
       goto exit;
   }
@@ -523,7 +523,7 @@ nScriptGroup2Create(JNIEnv *_env, jobject _this, jlong con, jstring name,
     goto exit;
   }
 
-  closures = (RsClosure*)malloc(sizeof(RsClosure) * numClosures);
+  closures = (RsClosure*)alloca(sizeof(RsClosure) * numClosures);
   if (closures == nullptr) {
       goto exit;
   }
@@ -1878,7 +1878,7 @@ nScriptForEach(JNIEnv *_env, jobject _this, jlong con, jlong script, jint slot,
         } else {
             // Convert from 64-bit jlong types to the native pointer type.
 
-            in_allocs = (RsAllocation*)malloc(in_len * sizeof(RsAllocation));
+            in_allocs = (RsAllocation*)alloca(in_len * sizeof(RsAllocation));
             if (in_allocs == nullptr) {
                 ALOGE("Failed launching kernel for lack of memory.");
                 _env->ReleaseLongArrayElements(ains, in_ptr, JNI_ABORT);
